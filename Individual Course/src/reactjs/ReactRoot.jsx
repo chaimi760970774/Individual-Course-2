@@ -1,41 +1,23 @@
 import { Experiment } from "./experimentPresenter.jsx";
-import { observer } from "mobx-react-lite";
-import { createHashRouter, RouterProvider, Navigate, Outlet } from "react-router-dom";
+import { Part2 } from "./part2Presenter.jsx";
+import { Demographics } from "./demographicsPresenter.jsx";
+import { createHashRouter, RouterProvider, Navigate } from "react-router-dom";
+import { Part3 } from "./part3Presenter.jsx";
 
-const ReactRoot = observer(
-  function ReactRoot(props) {
-    return (
-      <div>
-        <RouterProvider router={makeRouter(props.model)} />
-      </div>
-    );
-  }
-);
 
-function LayoutWithHeadbar({ model }) {
-  return (
-    <div>
-      <Outlet />
-    </div>
-  );
+
+
+function ReactRoot() {
+  return <RouterProvider router={makeRouter()} />;
 }
 
-export function makeRouter(model) {
+function makeRouter() {
   return createHashRouter([
-    {
-      path: "/",
-      element: <LayoutWithHeadbar model={model} />,
-      children: [
-        {
-          path: "experiment",
-          element: <Experiment />,
-        },
-      ],
-    },
-    {
-      path: "*",
-      element: <Navigate to="/experiment" />,
-    },
+    { path: "/",             element: <Navigate to="/demographics" /> },
+    { path: "/demographics", element: <Demographics /> },
+    { path: "/part1",        element: <Experiment /> },
+    { path: "/part2",        element: <Part2 /> },
+    { path: "/part3",        element: <Part3 /> },
   ]);
 }
 

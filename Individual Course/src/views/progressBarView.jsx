@@ -1,10 +1,10 @@
-import { DIMENSIONS } from "/src/data/experimentData.js";
+import { PART1_DIMENSIONS } from "/src/data/experimentData.js";
 
 export function ProgressBarView({ currentIndex, videoOrder, ratings, onNavigate }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 3, flexWrap: "wrap" }}>
       {videoOrder.map((v, i) => {
-        const rated = DIMENSIONS.every(d => ratings[v.id]?.[d.key] !== null);
+        const rated = PART1_DIMENSIONS.every(d => ratings[v.id]?.[d.key] !== null);
         const isCurrent = i === currentIndex;
         return (
           <button

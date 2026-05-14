@@ -1,4 +1,4 @@
-import { DIMENSIONS, SCALE_SIZE } from "/src/data/experimentData.js";
+import { PART1_DIMENSIONS, SCALE_SIZE } from "/src/data/experimentData.js";
 import { LikertScaleView } from "/src/views/likertScaleView.jsx";
 import { VideoPlayerView } from "/src/views/videoPlayerView.jsx";
 import { ProgressBarView } from "/src/views/progressBarView.jsx";
@@ -96,7 +96,7 @@ export function ExperimentView({
           <h2 style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", margin: "0 0 4px" }}>Rate this video</h2>
           <p style={{ fontSize: 13, color: "#94a3b8", margin: "0 0 24px" }}>Use the scale 1–5 for each dimension</p>
 
-          {DIMENSIONS.map(dim => (
+          {PART1_DIMENSIONS.map(dim => (
             <LikertScaleView
               key={dim.key}
               label={dim.label}
@@ -111,7 +111,7 @@ export function ExperimentView({
           <div style={{ marginTop: 8, padding: "14px 16px", background: "#f8fafc", borderRadius: 10, border: "1px solid #e2e8f0" }}>
             <div style={{ fontSize: 12, color: "#64748b", marginBottom: 10, fontWeight: 600 }}>Current ratings</div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 16px" }}>
-              {DIMENSIONS.map(dim => (
+              {PART1_DIMENSIONS.map(dim => (
                 <div key={dim.key} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: 12, color: "#64748b" }}>{dim.label}</span>
                   <div style={{ display: "flex", gap: 3 }}>

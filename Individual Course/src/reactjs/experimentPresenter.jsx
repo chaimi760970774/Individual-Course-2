@@ -1,23 +1,27 @@
-import { useState, useCallback } from "react";
-import { VIDEO_DATA, DIMENSIONS, shuffleArray, createEmptyRatings } from "/src/data/experimentData.js";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { PART1_VIDEOS } from "/src/data/part1Data.js";
+import { PART1_DIMENSIONS, shuffleArray, createEmptyRatings } from "/src/data/experimentData.js";
 import { IntroView } from "/src/views/introView.jsx";
 import { CompleteView } from "/src/views/completeView.jsx";
 import { ExperimentView } from "/src/views/experimentView.jsx";
 
 function Experiment() {
-  const [videoOrder] = useState(() => shuffleArray(VIDEO_DATA));
+  const navigate = useNavigate();
+
+  const [videoOrder] = useState(() => shuffleArray(PART1_VIDEOS));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [ratings, setRatings] = useState(() =>
-    Object.fromEntries(VIDEO_DATA.map(v => [v.id, createEmptyRatings()]))
+    Object.fromEntries(PART1_VIDEOS.map(v => [v.id, createEmptyRatings()]))
   );
   const [phase, setPhase] = useState("intro");
 
   const totalVideos = videoOrder.length;
   const currentVideo = videoOrder[currentIndex];
   const currentRatings = ratings[currentVideo?.id] ?? createEmptyRatings();
-  const isCurrentRated = DIMENSIONS.every(d => currentRatings[d.key] !== null);
+  const isCurrentRated = PART1_DIMENSIONS.every(d => currentRatings[d.key] !== null);
   const completedCount = videoOrder.filter(v =>
-    DIMENSIONS.every(d => ratings[v.id]?.[d.key] !== null)
+    PART1_DIMENSIONS.every(d => ratings[v.id]?.[d.key] !== null)
   ).length;
 
   function handlerStartACB() {
@@ -32,8 +36,11 @@ function Experiment() {
   }
 
   function handlerNextACB() {
-    if (currentIndex < totalVideos - 1) setCurrentIndex(i => i + 1);
-    else setPhase("complete");
+    if (currentIndex < totalVideos - 1) {
+      setCurrentIndex(i => i + 1);
+    } else {
+      navigate("/part2");
+    }
   }
 
   function handlerPrevACB() {
@@ -45,33 +52,32 @@ function Experiment() {
   }
 
   function handlerExportACB() {
-    const header = ["order", "participant", "strategy", "videoId", ...DIMENSIONS.map(d => d.key)];
+    const header = ["order", "participant", "strategy", "videoId", ...PART1_DIMENSIONS.map(d => d.key)];
     const rows = videoOrder.map((v, idx) => ({
       order: idx + 1,
       participant: v.participant,
       strategy: v.strategy,
       videoId: v.id,
-      ...Object.fromEntries(DIMENSIONS.map(d => [d.key, ratings[v.id]?.[d.key] ?? ""])),
+      ...Object.fromEntries(PART1_DIMENSIONS.map(d => [d.key, ratings[v.id]?.[d.key] ?? ""])),
     }));
     const csv = [header, ...rows.map(r => header.map(k => r[k]))].map(r => r.join(",")).join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    a.href = url; a.download = "experiment_results.csv"; a.click();
+    a.href = url; a.download = "part1_results.csv"; a.click();
     URL.revokeObjectURL(url);
   }
 
-  if (phase === "intro")
-    return <IntroView onStart={handlerStartACB} />;
 
-  if (phase === "complete")
-    return (
-      <CompleteView
-        completedCount={completedCount}
-        totalVideos={totalVideos}
-        onExport={handlerExportACB}
-      />
-    );
+  if (phase === "intro")
+  return (
+    <IntroView
+      title="Part 1 — Video Rating"
+      description="xxxx"
+      videoCount={28}
+      onStart={handlerStartACB}
+    />
+  );
 
   return (
     <ExperimentView
