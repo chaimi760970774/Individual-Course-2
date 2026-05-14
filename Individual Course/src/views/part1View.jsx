@@ -4,7 +4,7 @@ import { VideoPlayerView } from "/src/views/videoPlayerView.jsx";
 import { ProgressBarView } from "/src/views/progressBarView.jsx";
 
 
-export function ExperimentView({
+export function Part1View({
   currentVideo, currentIndex, totalVideos, videoOrder,
   currentRatings, isCurrentRated, completedCount,
   ratings, onRating, onNext, onPrev, onNavigate, onExport,

@@ -4,9 +4,9 @@ import { PART1_VIDEOS } from "/src/data/part1Data.js";
 import { PART1_DIMENSIONS, shuffleArray, createEmptyRatings } from "/src/data/experimentData.js";
 import { IntroView } from "/src/views/introView.jsx";
 import { CompleteView } from "/src/views/completeView.jsx";
-import { ExperimentView } from "/src/views/experimentView.jsx";
+import { Part1View } from "/src/views/part1View.jsx";
 
-function Experiment() {
+function Part1() {
   const navigate = useNavigate();
 
   const [videoOrder] = useState(() => shuffleArray(PART1_VIDEOS));
@@ -25,7 +25,7 @@ function Experiment() {
   ).length;
 
   function handlerStartACB() {
-    setPhase("experiment");
+    setPhase("part1");
   }
 
   function handlerRatingACB(dimension, value) {
@@ -80,7 +80,7 @@ function Experiment() {
   );
 
   return (
-    <ExperimentView
+    <Part1View
       currentVideo={currentVideo}
       currentIndex={currentIndex}
       totalVideos={totalVideos}
@@ -98,4 +98,4 @@ function Experiment() {
   );
 }
 
-export { Experiment };
+export { Part1 };

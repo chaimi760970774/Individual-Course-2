@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { PART3_VIDEOS } from "/src/data/part3Data.js";
 import { PART1_DIMENSIONS, shuffleArray, createEmptyRatings } from "/src/data/experimentData.js";
 import { IntroView } from "/src/views/introView.jsx";
-import { ExperimentView } from "/src/views/experimentView.jsx";
+import { Part1View } from "/src/views/part1View.jsx";
 
 function Part3() {
   const navigate = useNavigate();
@@ -78,7 +78,7 @@ if (phase === "intro")
   );
 
   return (
-    <ExperimentView
+    <Part1View
       currentVideo={currentVideo}
       currentIndex={currentIndex}
       totalVideos={totalVideos}

@@ -1,4 +1,4 @@
-import { Experiment } from "./experimentPresenter.jsx";
+import { Part1 } from "./part1Presenter.jsx";
 import { Part2 } from "./part2Presenter.jsx";
 import { Demographics } from "./demographicsPresenter.jsx";
 import { createHashRouter, RouterProvider, Navigate } from "react-router-dom";
@@ -15,7 +15,7 @@ function makeRouter() {
   return createHashRouter([
     { path: "/",             element: <Navigate to="/demographics" /> },
     { path: "/demographics", element: <Demographics /> },
-    { path: "/part1",        element: <Experiment /> },
+    { path: "/part1",        element: <Part1 /> },
     { path: "/part2",        element: <Part2 /> },
     { path: "/part3",        element: <Part3 /> },
   ]);
