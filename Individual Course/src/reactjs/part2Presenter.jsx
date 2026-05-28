@@ -141,8 +141,8 @@ function Part2() {
     return (
       <IntroView
         title="Part 2 — Shadow & Fidelity"
-        description="xxxx"
-        videoCount={21}
+        description="In this part, you will first watch individual videos and rate them on several dimensions. Then you will compare three videos side by side and rank them by perceived politeness."
+        videoCount={12}
         onStart={handlerStartACB}
       />
     );

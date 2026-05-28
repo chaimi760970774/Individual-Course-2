@@ -94,14 +94,14 @@ export function Part1View({
           border: "1px solid #e2e8f0", alignSelf: "flex-start",
         }}>
           <h2 style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", margin: "0 0 4px" }}>Rate this video</h2>
-          <p style={{ fontSize: 13, color: "#94a3b8", margin: "0 0 24px" }}>Use the scale 1–5 for each dimension</p>
+          <p style={{ fontSize: 13, color: "#94a3b8", margin: "0 0 24px" }}>Use the scale 1–7 for each dimension</p>
 
           {PART1_DIMENSIONS.map(dim => (
             <LikertScaleView
               key={dim.key}
               label={dim.label}
-              desc={dim.desc}
-              tooltip={dim.tooltip}  
+              //desc={dim.desc}
+              //tooltip={dim.tooltip}  
               value={currentRatings[dim.key]}
               onRating={value => onRating(dim.key, value)}
             />
@@ -113,7 +113,7 @@ export function Part1View({
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 16px" }}>
               {PART1_DIMENSIONS.map(dim => (
                 <div key={dim.key} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ fontSize: 12, color: "#64748b" }}>{dim.label}</span>
+                  <span style={{ fontSize: 12, color: "#64748b" }}>{dim.label_short}</span>
                   <div style={{ display: "flex", gap: 3 }}>
                     {Array.from({ length: SCALE_SIZE }, (_, i) => (
                       <div key={i} style={{

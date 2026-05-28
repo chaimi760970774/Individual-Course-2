@@ -1,9 +1,9 @@
 // 共用的维度定义
 export const PART1_DIMENSIONS = [
-  { key: "valence",      label: "Valence",         desc: "Positive & Pleasant", tooltip: "xxxx" },
-  { key: "trustworthy",  label: "Trustworthiness",  desc: "Reliable & Clear",   tooltip: "xxxx" },
-  { key: "relationship", label: "Relationship",     desc: "Social Connection",   tooltip: "xxxx" },
-  { key: "dominance",    label: "Dominance",        desc: "Dominant",            tooltip: "xxxx" },
+  { key: "valence",      label: "I felt positive and pleasant during the interaction with this agent.", label_short: "Valence" },
+  { key: "trustworthy",  label: "I perceive the agent as reliable and its intentions as clear.", label_short: "Trustworthiness"},
+  { key: "relationship", label: "The agent appeared to be interested in establishing a close social connection with me.", label_short: "Relationship"},
+  { key: "dominance",    label: "The agent respected my freedom of action.", label_short: "Freedom" },
 ];
 
 
@@ -17,7 +17,7 @@ export const PART2B_DIMENSIONS = [
   { key: "voicematch", label: "The agent's voice quality matched its visual appearance." },
 ];
 
-export const SCALE_SIZE = 5;
+export const SCALE_SIZE = 7;
 
 // 共用工具函数
 export function shuffleArray(arr) {

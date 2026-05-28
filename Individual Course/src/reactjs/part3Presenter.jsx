@@ -91,7 +91,7 @@ function Part3() {
     return (
       <IntroView
         title="Part 3 — Hair Style"
-        description="xxxx"
+        description="(Almost done!) In this part, you will watch short video clips featuring characters with different hairstyles. After each video, please rate your perception on the scales provided."
         videoCount={9}
         onStart={handlerStartACB}
       />

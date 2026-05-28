@@ -91,8 +91,8 @@ function Part1() {
     return (
       <IntroView
         title="Part 1 — Video Rating"
-        description="xxxx"
-        videoCount={28}
+        description="In this part, you will watch short video clips of virtual characters performing different social interactions. After each video, please rate your perception on the scales provided."
+        videoCount={16}
         onStart={handlerStartACB}
       />
     );

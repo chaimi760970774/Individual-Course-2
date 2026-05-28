@@ -233,7 +233,7 @@
 .part2__video-col {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 24px;
 }
 
 .part2__video-num {
