@@ -704,13 +704,19 @@
   min-height: 600px;
 }
 
-.part2b__video .video-player {
-  min-height: 600px;
-}
+
+
 .exp__nav {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 16px;
   margin-top: 28px;
+}
+.part2__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
 }

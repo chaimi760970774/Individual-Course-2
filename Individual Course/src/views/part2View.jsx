@@ -72,7 +72,7 @@ export function Part2View({
                 <div className="part2__video-num">Video {idx + 1}</div>
                 <VideoPlayerView fileId={video.fileId} />
                 <SevenScaleView
-                  videoLabel={`Rate Video ${idx + 1}`}
+                  videoLabel={`Politeness Rating (Video ${idx + 1})`}
                   value={currentRatingsA[video.id]}
                   onRating={value => onRatingA(video.id, value)}
                 />
@@ -112,63 +112,64 @@ export function Part2View({
       )}
 
       {/* Part B — single video + 7 dimensions */}
-      {phase === "partB" && (
-        <main className="part2__main part2__main--b">
-          <div className="part2b__layout">
+{phase === "partB" && (
+  <main className="part2__main part2__main--b">
+    <div className="part2b__layout">
 
-            {/* Video */}
-            <div className="part2b__video">
-              <VideoPlayerView fileId={currentVideo.fileId} />
-            </div>
+      {/* Video */}
+      <div className="part2b__video">
+        <VideoPlayerView fileId={currentVideo.fileId} />
+        <div className="part2__nav">
+          <button
+            onClick={onPrevB}
+            disabled={currentVideoIndex === 0}
+            className="part2__nav-btn part2__nav-btn--prev"
+          >
+            ‹ Prev
+          </button>
+          <span style={{ fontSize: 15, fontWeight: 500, color: "#64748b", minWidth: 60, textAlign: "center" }}>
+            {currentVideoIndex + 1} / {totalVideos}
+          </span>
+          <button
+            onClick={onNextB}
+            disabled={!isBRated}
+            className={`part2__nav-btn part2__nav-btn--next ${isBRated ? "part2__nav-btn--active" : ""}`}
+          >
+            {currentVideoIndex === totalVideos - 1 ? "Finish Part 2 →" : "Next →"}
+          </button>
+        </div>
+        {!isBRated && (
+          <p className="part2__warning">⚠ Please rate all dimensions before continuing</p>
+        )}
+      </div>
 
-            {/* Rating panel */}
-            <div className="part2b__panel">
-              <h2 className="part2b__panel-title">Rate this video</h2>
-              <p className="part2b__panel-hint">Strongly Disagree → Strongly Agree (1–7)</p>
+      {/* Rating panel */}
+      <div className="part2b__panel">
+        <h2 className="part2b__panel-title">Rate this video</h2>
+        <p className="part2b__panel-hint">Strongly Disagree → Strongly Agree (1–7)</p>
 
-              {PART2B_DIMENSIONS.map((dim, idx) => (
-                <div key={dim.key} className="part2b__dim">
-                  <p className="part2b__dim-label">
-                    <span className="part2b__dim-num">{idx + 1}.</span> {dim.label}
-                  </p>
-                  <div className="part2b__scale">
-                    {Array.from({ length: 7 }, (_, i) => i + 1).map(n => (
-                      <button
-                        key={n}
-                        onClick={() => onRatingB(dim.key, n)}
-                        className={`part2b__scale-btn ${currentRatingsB[dim.key] === n ? "part2b__scale-btn--active" : ""}`}
-                      >
-                        {n}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+        {PART2B_DIMENSIONS.map((dim, idx) => (
+          <div key={dim.key} className="part2b__dim">
+            <p className="part2b__dim-label">
+              <span className="part2b__dim-num">{idx + 1}.</span> {dim.label}
+            </p>
+            <div className="part2b__scale">
+              {Array.from({ length: 7 }, (_, i) => i + 1).map(n => (
+                <button
+                  key={n}
+                  onClick={() => onRatingB(dim.key, n)}
+                  className={`part2b__scale-btn ${currentRatingsB[dim.key] === n ? "part2b__scale-btn--active" : ""}`}
+                >
+                  {n}
+                </button>
               ))}
             </div>
           </div>
-
-          <div className="part2__nav">
-            <button
-              onClick={onPrevB}
-              disabled={currentVideoIndex === 0}
-              className="part2__nav-btn part2__nav-btn--prev"
-            >
-              ‹ Prev
-            </button>
-            <button
-              onClick={onNextB}
-              disabled={!isBRated}
-              className={`part2__nav-btn part2__nav-btn--next ${isBRated ? "part2__nav-btn--active" : ""}`}
-            >
-              {currentVideoIndex === totalVideos - 1 ? "Finish Part 2 →" : "Next →"}
-            </button>
-          </div>
-
-          {!isBRated && (
-            <p className="part2__warning">⚠ Please rate all dimensions before continuing</p>
-          )}
-        </main>
-      )}
+        ))}
+      </div>
+    </div>
+  </main>
+)}
     </div>
   );
 }
