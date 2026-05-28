@@ -38,7 +38,7 @@ export function RankingView({ videos, ranking, onRanking }) {
   return (
     <div className="ranking">
       <p className="ranking__instruction">
-        Drag to rank the videos by perceived politeness (1st = most polite)
+        Which character appeared most polite? Drag to rank the videos by perceived politeness (1st = most polite)
       </p>
       <div className="ranking__list">
         {orderedVideos.map((video, idx) => (
@@ -53,7 +53,7 @@ export function RankingView({ videos, ranking, onRanking }) {
           >
             <div className="ranking__rank">#{idx + 1}</div>
             <div className="ranking__info">
-              <span className="ranking__shadow">{video.shadow} shadow</span>
+              <span className="ranking__shadow">{video.label}</span>
             </div>
             <div className="ranking__handle">⠿</div>
           </div>

@@ -1,6 +1,6 @@
 import { PART1_DIMENSIONS } from "/src/data/experimentData.js";
 
-export function ProgressBarView({ currentIndex, videoOrder, ratings, onNavigate }) {
+export function ProgressBarView({ currentIndex, videoOrder, ratings }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 3, flexWrap: "wrap" }}>
       {videoOrder.map((v, i) => {
@@ -9,7 +9,7 @@ export function ProgressBarView({ currentIndex, videoOrder, ratings, onNavigate 
         return (
           <button
             key={v.id}
-            onClick={() => onNavigate(i)}
+            
             title={`Video ${i + 1}`}
             style={{
               width: isCurrent ? 22 : 10, height: 10,

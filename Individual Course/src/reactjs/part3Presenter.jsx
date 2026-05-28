@@ -1,19 +1,49 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PART3_VIDEOS } from "/src/data/part3Data.js";
 import { PART1_DIMENSIONS, shuffleArray, createEmptyRatings } from "/src/data/experimentData.js";
+import { savePart3Results } from "/src/data/saveData.js";
 import { IntroView } from "/src/views/introView.jsx";
 import { Part1View } from "/src/views/part1View.jsx";
 
 function Part3() {
   const navigate = useNavigate();
 
-  const [videoOrder] = useState(() => shuffleArray(PART3_VIDEOS));
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [ratings, setRatings] = useState(() =>
-    Object.fromEntries(PART3_VIDEOS.map(v => [v.id, createEmptyRatings()]))
-  );
-  const [phase, setPhase] = useState("intro");
+  const [videoOrder] = useState(() => {
+    const saved = localStorage.getItem("part3_videoOrder");
+    return saved ? JSON.parse(saved) : shuffleArray(PART3_VIDEOS);
+  });
+
+  const [currentIndex, setCurrentIndex] = useState(() => {
+    const saved = localStorage.getItem("part3_currentIndex");
+    return saved ? parseInt(saved) : 0;
+  });
+
+  const [ratings, setRatings] = useState(() => {
+    const saved = localStorage.getItem("part3_ratings");
+    return saved ? JSON.parse(saved) : Object.fromEntries(PART3_VIDEOS.map(v => [v.id, createEmptyRatings()]));
+  });
+
+  const [phase, setPhase] = useState(() => {
+    return localStorage.getItem("part3_phase") ?? "intro";
+  });
+
+  // 同步到 localStorage
+  useEffect(() => {
+    localStorage.setItem("part3_videoOrder", JSON.stringify(videoOrder));
+  }, [videoOrder]);
+
+  useEffect(() => {
+    localStorage.setItem("part3_currentIndex", String(currentIndex));
+  }, [currentIndex]);
+
+  useEffect(() => {
+    localStorage.setItem("part3_ratings", JSON.stringify(ratings));
+  }, [ratings]);
+
+  useEffect(() => {
+    localStorage.setItem("part3_phase", phase);
+  }, [phase]);
 
   const totalVideos = videoOrder.length;
   const currentVideo = videoOrder[currentIndex];
@@ -34,10 +64,17 @@ function Part3() {
     }));
   }
 
-  function handlerNextACB() {
+  async function handlerNextACB() {
     if (currentIndex < totalVideos - 1) {
       setCurrentIndex(i => i + 1);
     } else {
+      const participantInfo = JSON.parse(localStorage.getItem("participantInfo") ?? "{}");
+      await savePart3Results(participantInfo, videoOrder, ratings, PART1_DIMENSIONS);
+      // 清除 part3 的缓存
+      localStorage.removeItem("part3_videoOrder");
+      localStorage.removeItem("part3_currentIndex");
+      localStorage.removeItem("part3_ratings");
+      localStorage.removeItem("part3_phase");
       navigate("/debrief");
     }
   }
@@ -50,32 +87,15 @@ function Part3() {
     if (idx >= 0 && idx < totalVideos) setCurrentIndex(idx);
   }
 
-  function handlerExportACB() {
-    const header = ["order", "hair", "strategy", "videoId", ...PART1_DIMENSIONS.map(d => d.key)];
-    const rows = videoOrder.map((v, idx) => ({
-      order: idx + 1,
-      hair: v.hair,
-      strategy: v.strategy,
-      videoId: v.id,
-      ...Object.fromEntries(PART1_DIMENSIONS.map(d => [d.key, ratings[v.id]?.[d.key] ?? ""])),
-    }));
-    const csv = [header, ...rows.map(r => header.map(k => r[k]))].map(r => r.join(",")).join("\n");
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url; a.download = "part3_results.csv"; a.click();
-    URL.revokeObjectURL(url);
-  }
-
-if (phase === "intro")
-  return (
-    <IntroView
-      title="Part 3 — Hair Style"
-      description="xxxx"
-      videoCount={9}
-      onStart={handlerStartACB}
-    />
-  );
+  if (phase === "intro")
+    return (
+      <IntroView
+        title="Part 3 — Hair Style"
+        description="xxxx"
+        videoCount={9}
+        onStart={handlerStartACB}
+      />
+    );
 
   return (
     <Part1View
@@ -91,7 +111,6 @@ if (phase === "intro")
       onNext={handlerNextACB}
       onPrev={handlerPrevACB}
       onNavigate={handlerNavigateACB}
-      onExport={handlerExportACB}
     />
   );
 }

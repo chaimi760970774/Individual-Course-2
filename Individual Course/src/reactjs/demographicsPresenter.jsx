@@ -32,8 +32,10 @@ function Demographics() {
       setErrors(newErrors);
       return;
     }
-
+    localStorage.setItem("participantInfo", JSON.stringify(form));
     navigate("/part1");
+
+    
   }
 
   return (

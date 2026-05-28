@@ -3,6 +3,9 @@ import { Part2 } from "./part2Presenter.jsx";
 import { Demographics } from "./demographicsPresenter.jsx";
 import { createHashRouter, RouterProvider, Navigate } from "react-router-dom";
 import { Part3 } from "./part3Presenter.jsx";
+import { Debrief } from "./debriefPresenter.jsx";
+
+
 
 
 
@@ -18,6 +21,7 @@ function makeRouter() {
     { path: "/part1",        element: <Part1 /> },
     { path: "/part2",        element: <Part2 /> },
     { path: "/part3",        element: <Part3 /> },
+    { path: "/debrief", element: <Debrief /> },
   ]);
 }
 

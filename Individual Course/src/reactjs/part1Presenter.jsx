@@ -1,20 +1,49 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PART1_VIDEOS } from "/src/data/part1Data.js";
 import { PART1_DIMENSIONS, shuffleArray, createEmptyRatings } from "/src/data/experimentData.js";
+import { savePart1Results } from "/src/data/saveData.js";
 import { IntroView } from "/src/views/introView.jsx";
-import { CompleteView } from "/src/views/completeView.jsx";
 import { Part1View } from "/src/views/part1View.jsx";
 
 function Part1() {
   const navigate = useNavigate();
 
-  const [videoOrder] = useState(() => shuffleArray(PART1_VIDEOS));
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [ratings, setRatings] = useState(() =>
-    Object.fromEntries(PART1_VIDEOS.map(v => [v.id, createEmptyRatings()]))
-  );
-  const [phase, setPhase] = useState("intro");
+  const [videoOrder] = useState(() => {
+    const saved = localStorage.getItem("part1_videoOrder");
+    return saved ? JSON.parse(saved) : shuffleArray(PART1_VIDEOS);
+  });
+
+  const [currentIndex, setCurrentIndex] = useState(() => {
+    const saved = localStorage.getItem("part1_currentIndex");
+    return saved ? parseInt(saved) : 0;
+  });
+
+  const [ratings, setRatings] = useState(() => {
+    const saved = localStorage.getItem("part1_ratings");
+    return saved ? JSON.parse(saved) : Object.fromEntries(PART1_VIDEOS.map(v => [v.id, createEmptyRatings()]));
+  });
+
+  const [phase, setPhase] = useState(() => {
+    return localStorage.getItem("part1_phase") ?? "intro";
+  });
+
+  // 同步到 localStorage
+  useEffect(() => {
+    localStorage.setItem("part1_videoOrder", JSON.stringify(videoOrder));
+  }, [videoOrder]);
+
+  useEffect(() => {
+    localStorage.setItem("part1_currentIndex", String(currentIndex));
+  }, [currentIndex]);
+
+  useEffect(() => {
+    localStorage.setItem("part1_ratings", JSON.stringify(ratings));
+  }, [ratings]);
+
+  useEffect(() => {
+    localStorage.setItem("part1_phase", phase);
+  }, [phase]);
 
   const totalVideos = videoOrder.length;
   const currentVideo = videoOrder[currentIndex];
@@ -25,7 +54,7 @@ function Part1() {
   ).length;
 
   function handlerStartACB() {
-    setPhase("part1");
+    setPhase("experiment");
   }
 
   function handlerRatingACB(dimension, value) {
@@ -35,10 +64,17 @@ function Part1() {
     }));
   }
 
-  function handlerNextACB() {
+  async function handlerNextACB() {
     if (currentIndex < totalVideos - 1) {
       setCurrentIndex(i => i + 1);
     } else {
+      const participantInfo = JSON.parse(localStorage.getItem("participantInfo") ?? "{}");
+      await savePart1Results(participantInfo, videoOrder, ratings, PART1_DIMENSIONS);
+      // 清除 part1 的缓存
+      localStorage.removeItem("part1_videoOrder");
+      localStorage.removeItem("part1_currentIndex");
+      localStorage.removeItem("part1_ratings");
+      localStorage.removeItem("part1_phase");
       navigate("/part2");
     }
   }
@@ -51,33 +87,15 @@ function Part1() {
     if (idx >= 0 && idx < totalVideos) setCurrentIndex(idx);
   }
 
-  function handlerExportACB() {
-    const header = ["order", "participant", "strategy", "videoId", ...PART1_DIMENSIONS.map(d => d.key)];
-    const rows = videoOrder.map((v, idx) => ({
-      order: idx + 1,
-      participant: v.participant,
-      strategy: v.strategy,
-      videoId: v.id,
-      ...Object.fromEntries(PART1_DIMENSIONS.map(d => [d.key, ratings[v.id]?.[d.key] ?? ""])),
-    }));
-    const csv = [header, ...rows.map(r => header.map(k => r[k]))].map(r => r.join(",")).join("\n");
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url; a.download = "part1_results.csv"; a.click();
-    URL.revokeObjectURL(url);
-  }
-
-
   if (phase === "intro")
-  return (
-    <IntroView
-      title="Part 1 — Video Rating"
-      description="xxxx"
-      videoCount={28}
-      onStart={handlerStartACB}
-    />
-  );
+    return (
+      <IntroView
+        title="Part 1 — Video Rating"
+        description="xxxx"
+        videoCount={28}
+        onStart={handlerStartACB}
+      />
+    );
 
   return (
     <Part1View
@@ -93,7 +111,6 @@ function Part1() {
       onNext={handlerNextACB}
       onPrev={handlerPrevACB}
       onNavigate={handlerNavigateACB}
-      onExport={handlerExportACB}
     />
   );
 }
