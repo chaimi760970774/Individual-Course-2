@@ -1,5 +1,5 @@
 import { VideoPlayerView } from "/src/views/videoPlayerView.jsx";
-import { SevenScaleView } from "/src/views/SevenScaleView.jsx";
+import { SevenScaleView } from "/src/views/sevenScaleView.jsx";
 import { RankingView } from "/src/views/rankingView.jsx";
 import { PART2B_DIMENSIONS } from "/src/data/part2Data.js";
 
