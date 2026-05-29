@@ -1,18 +1,17 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PART1_VIDEOS } from "/src/data/part1Data.js";
-import { PART1_DIMENSIONS, shuffleArray, createEmptyRatings } from "/src/data/experimentData.js";
+import { PART1_DIMENSIONS, createEmptyRatings } from "/src/data/experimentData.js";
 import { savePart1Results } from "/src/data/saveData.js";
+import { getPart1Order } from "/src/data/monteCarloRandomization.js";
 import { IntroView } from "/src/views/introView.jsx";
 import { Part1View } from "/src/views/part1View.jsx";
 
 function Part1() {
   const navigate = useNavigate();
 
-  const [videoOrder] = useState(() => {
-    const saved = localStorage.getItem("part1_videoOrder");
-    return saved ? JSON.parse(saved) : shuffleArray(PART1_VIDEOS);
-  });
+  const [videoOrder, setVideoOrder] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [currentIndex, setCurrentIndex] = useState(() => {
     const saved = localStorage.getItem("part1_currentIndex");
@@ -28,9 +27,24 @@ function Part1() {
     return localStorage.getItem("part1_phase") ?? "intro";
   });
 
+  // 初始化视频顺序
+  useEffect(() => {
+    const saved = localStorage.getItem("part1_videoOrder");
+    if (saved) {
+      setVideoOrder(JSON.parse(saved));
+      setLoading(false);
+    } else {
+      getPart1Order(PART1_VIDEOS).then(order => {
+        setVideoOrder(order);
+        setLoading(false);
+      });
+    }
+  }, []);
+
   // 同步到 localStorage
   useEffect(() => {
-    localStorage.setItem("part1_videoOrder", JSON.stringify(videoOrder));
+    if (videoOrder.length > 0)
+      localStorage.setItem("part1_videoOrder", JSON.stringify(videoOrder));
   }, [videoOrder]);
 
   useEffect(() => {
@@ -44,6 +58,9 @@ function Part1() {
   useEffect(() => {
     localStorage.setItem("part1_phase", phase);
   }, [phase]);
+
+  if (loading)
+    return <div style={{ padding: 40, textAlign: "center", fontFamily: "sans-serif" }}>Preparing experiment...</div>;
 
   const totalVideos = videoOrder.length;
   const currentVideo = videoOrder[currentIndex];
@@ -70,7 +87,6 @@ function Part1() {
     } else {
       const participantInfo = JSON.parse(localStorage.getItem("participantInfo") ?? "{}");
       await savePart1Results(participantInfo, videoOrder, ratings, PART1_DIMENSIONS);
-      // 清除 part1 的缓存
       localStorage.removeItem("part1_videoOrder");
       localStorage.removeItem("part1_currentIndex");
       localStorage.removeItem("part1_ratings");
