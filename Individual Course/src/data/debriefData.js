@@ -18,59 +18,55 @@ export const DEBRIEF_QUESTIONS = [
   {
     id: "q4",
     type: "text",
-    question: "Do the appearances of different characters affect how you perceive different polite behaviors? If yes, please describe what caused these differences in perception.",
+    question: "What do you base your judgment of politeness on? Action animation, tone of voice, appearance, animation quality (visual and audio quality)?",
   },
   {
     id: "q5",
-    type: "choice",
-    question: "Do you think the agent's resemblance is closer to a biological human, or a synthetic entity such as a dummy or mannequin?",
-    options: ["Biological human", "Synthetic entity", "Somewhere in between"],
+    type: "text",
+    question: "Do you think the different shadow conditions (hard shadows, soft shadows, and no shadows) influenced the character’s sense of presence or realism? If yes, did this further affect your perception of politeness?",
+    
   },
   {
     id: "q6",
-    type: "scale7",
-    question: "On a scale from 1 to 7, how would you rate your usual preference for cool color tones?",
-    hint: "1 = strongly dislike cool tones, 7 = strongly like cool tones",
+    type: "text",
+    question: "If you were interacting with a virtual character in a game or virtual environment, what type of character would you prefer to interact with (For example, a more realistic character, a more stylized character, or a simpler low-quality character)?",
+   
   },
   {
     id: "q7",
-    type: "choice",
-    question: "In daily life, do you associate environments with cool color tones more with professionalism or with hostility?",
-    options: ["Professionalism", "Hostility", "Neither", "Both equally"],
+    type: "text",
+    question: "Did you notice differences in visual quality between the videos, such as jagged edges, plastic-like appearance, or texture details? If yes, did these differences influence your overall impression of the character or its realism?",
+   
   },
   {
     id: "q8",
-    type: "yesno_text",
-    question: "Did you notice any changes in image quality, such as aliasing/jagged edges or a plastic-like appearance?",
-    followUp: "Please describe.",
+    type: "text",
+    question: "Do you think these visual elements (such as shadows, materials, video clarity, or visual style) changed your understanding of the character’s emotions, attitudes, or intentions?",
+   
   },
   {
     id: "q9",
-    type: "yesno_text",
-    question: "Do highly realistic 3D characters make you feel psychologically cautious, uneasy, or uncomfortable?",
-    followUp: "Please describe.",
+    type: "text",
+    question: "Did you notice any inconsistency or mismatch between the character’s voice and visual appearance in some videos? If yes, did this mismatch affect your perception of the character’s naturalness or politeness?",
+ 
   },
   {
     id: "q10",
-    type: "yesno_text",
-    question: "Do roughly made or low-quality 3D characters cause you to feel biased against them or lose interest in interacting with them?",
-    followUp: "Please describe.",
+    type: "text",
+    question: "For the same character, does a different hairstyle affect your first impression of her personality? If yes, please describe how.",
+  
   },
   {
     id: "q11",
     type: "text",
-    question: "For the same character, does a different hairstyle affect your first impression of her personality? If yes, please describe how.",
+    question: "When the character gives instructions, does her hairstyle affect how polite you perceive her behavior to be? If yes, please rank the hairstyles from lowest to highest in perceived politeness.",
   },
   {
     id: "q12",
-    type: "yesno_ranking",
-    question: "When the character gives instructions, does her hairstyle affect how polite you perceive her behavior to be?",
-    followUp: "Please rank the hairstyles from lowest to highest in perceived politeness.",
-    rankOptions: ["Long hair", "Medium hair", "Short hair"],
-  },
-  {
-    id: "q13",
     type: "text",
     question: "Is there anything else you would like to add? For example, what aspects do you think should be improved? Please be as specific as possible.",
+    
+    
   },
+  
 ];
