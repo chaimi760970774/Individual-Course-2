@@ -1,0 +1,25 @@
+services:
+  mongo:
+    image: mongo
+    container_name: individual-course-mongo
+    ports:
+      - "${MONGO_PORT:-27018}:27017"
+    volumes:
+      - individual-course-mongo-data:/data/db
+
+  backend:
+    build: ./server
+    container_name: individual-course-backend
+    depends_on:
+      - mongo
+    ports:
+      - "${BACKEND_PORT:-3000}:3000"
+    environment:
+      # override with an Atlas connection string via the MONGODB_URI env var / root .env
+      MONGODB_URI: ${MONGODB_URI:-mongodb://mongo:27017/individual_course}
+      MONGODB_DB: ${MONGODB_DB:-}
+      ALLOWED_ORIGIN: ${ALLOWED_ORIGIN:-}
+      PORT: 3000
+
+volumes:
+  individual-course-mongo-data:
