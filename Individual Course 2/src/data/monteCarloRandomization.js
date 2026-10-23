@@ -101,7 +101,7 @@ async function monteCarloRandomize(items, constraintKeys, ordersPath, numCandida
   // 1. 从后端（MongoDB）读取已有参与者的顺序
   let existingOrders = [];
   try {
-    const res = await fetch(`${API_URL}${ordersPath}`, { signal: AbortSignal.timeout(10000) });
+    const res = await fetch(`${API_URL}${ordersPath}`, { signal: AbortSignal.timeout(60000) });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const docs = await res.json();
     docs.forEach(data => {
@@ -143,7 +143,7 @@ async function monteCarloRandomize(items, constraintKeys, ordersPath, numCandida
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ videoOrder: bestSequence.map(v => v.id ?? v) }),
-      signal: AbortSignal.timeout(10000),
+      signal: AbortSignal.timeout(60000),
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
   } catch (err) {

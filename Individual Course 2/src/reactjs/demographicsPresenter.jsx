@@ -1,9 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { DemographicsView } from "/src/views/demographicsView.jsx";
+import { API_URL } from "/src/data/api.js";
 
 function Demographics() {
   const navigate = useNavigate();
+
+  // 后台唤醒 Render 上休眠的后端，不等待结果
+  useEffect(() => {
+    fetch(`${API_URL}/api/health`).catch(err => {
+      console.warn("Backend wake-up request failed:", err);
+    });
+  }, []);
 
   const [form, setForm] = useState({
     participantId: "",
