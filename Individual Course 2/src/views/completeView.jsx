@@ -1,4 +1,4 @@
-export function CompleteView({ completedCount, totalVideos, onExport }) {
+export function CompleteView({ completedCount, totalVideos }) {
   const pct = Math.round((completedCount / totalVideos) * 100);
   return (
     <div style={{
@@ -20,7 +20,7 @@ export function CompleteView({ completedCount, totalVideos, onExport }) {
         </p>
         <div style={{
           background: "#f0fdf4", borderRadius: 12, padding: "16px 20px",
-          marginBottom: 32, display: "flex", alignItems: "center", gap: 16,
+          display: "flex", alignItems: "center", gap: 16,
         }}>
           <div style={{ flex: 1, height: 10, background: "#dcfce7", borderRadius: 5, overflow: "hidden" }}>
             <div style={{
@@ -30,17 +30,6 @@ export function CompleteView({ completedCount, totalVideos, onExport }) {
           </div>
           <span style={{ fontSize: 15, fontWeight: 700, color: "#15803d" }}>{pct}%</span>
         </div>
-        <button
-          onClick={onExport}
-          style={{
-            width: "100%", padding: "14px 0", borderRadius: 12,
-            background: "linear-gradient(135deg, #2563eb, #1d4ed8)",
-            color: "#fff", fontWeight: 700, fontSize: 16, border: "none",
-            cursor: "pointer", boxShadow: "0 4px 16px rgba(37,99,235,0.4)",
-          }}
-        >
-          ↓ Download Results (CSV)
-        </button>
       </div>
     </div>
   );

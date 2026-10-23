@@ -92,8 +92,8 @@ function Part1() {
       const participantInfo = JSON.parse(localStorage.getItem("participantInfo") ?? "{}");
       try {
         // 保存成功前不清理 localStorage，失败时可以重试
-        const rows = await savePart1Results(participantInfo, videoOrder, ratings, PART1_DIMENSIONS);
-        navigate("/complete", { state: { completedCount, totalVideos, ratings: rows } });
+        await savePart1Results(participantInfo, videoOrder, ratings, PART1_DIMENSIONS);
+        navigate("/complete", { state: { completedCount, totalVideos } });
       } catch (err) {
         console.error(err);
         setSubmitError(true);

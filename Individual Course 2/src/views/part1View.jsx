@@ -7,7 +7,7 @@ import { ProgressBarView } from "/src/views/progressBarView.jsx";
 export function Part1View({
   currentVideo, currentIndex, totalVideos, videoOrder,
   currentRatings, isCurrentRated, completedCount,
-  ratings, submitting, submitError, onRating, onNext, onPrev, onNavigate, onExport,
+  ratings, submitting, submitError, onRating, onNext, onPrev, onNavigate,
 }) {
   const canNext = isCurrentRated && !submitting;
   return (
@@ -21,10 +21,6 @@ export function Part1View({
         <span style={{ fontSize: 15, fontWeight: 600 }}>Video Rating Study</span>
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
           <span style={{ fontSize: 13, color: "#94a3b8" }}>{completedCount}/{totalVideos} rated</span>
-          <button onClick={onExport} style={{
-            padding: "6px 14px", borderRadius: 8, border: "1px solid #334155",
-            background: "transparent", color: "#94a3b8", fontSize: 13, cursor: "pointer",
-          }}>Export CSV</button>
         </div>
       </header>
 

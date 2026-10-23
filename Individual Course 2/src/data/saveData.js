@@ -21,23 +21,4 @@ export async function savePart1Results(participantInfo, videoOrder, ratings, dim
     body: JSON.stringify({ participantInfo, ratings: rows }),
   });
   if (!res.ok) throw new Error(`Saving Part1 results failed: ${res.status}`);
-
-  return rows;
-}
-
-// 把评分行导出为 CSV 并下载
-export function downloadResultsCSV(rows, filename = "results.csv") {
-  if (rows.length === 0) return;
-  const headers = Object.keys(rows[0]);
-  const csv = [
-    headers.join(","),
-    ...rows.map(r => headers.map(h => JSON.stringify(r[h] ?? "")).join(",")),
-  ].join("\n");
-
-  const url = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
 }
