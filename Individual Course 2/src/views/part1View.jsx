@@ -45,7 +45,8 @@ export function Part1View({
       }}>
         {/* Left: video + nav */}
         <div style={{ flex: "0 0 52%", minWidth: 0 }}>
-          <VideoPlayerView fileId={currentVideo.fileId} />
+          {/* key：切换视频时整个播放器（含 playing 状态）重新挂载 */}
+          <VideoPlayerView key={currentVideo.id} fileId={currentVideo.fileId} />
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginTop: 20 }}>
             <button
               onClick={onPrev}
