@@ -1,6 +1,6 @@
 # Individual Course 2 — 视频评分实验
 
-实验流程：**Demographics → Part1（4 个视频，7 点量表评分）→ 完成页**。
+实验流程：**知情同意（Consent）→ Demographics（participant code）→ Part1（16 个视频，7 点量表评分）→ 完成页**。未勾选同意或未填 code 时无法进入后续页面。
 
 - 前端：React + Vite + react-router（HashRouter），部署在 GitHub Pages
 - 后端：Express 5 + MongoDB 官方驱动，负责保存视频顺序和实验结果
@@ -15,9 +15,10 @@
 │   │   ├── reactjs/              # Presenter：ReactRoot（路由）、demographics、part1、complete
 │   │   ├── views/                # View：纯展示组件
 │   │   └── data/                 # 数据和逻辑
-│   │       ├── part1Data.js              # 4 个视频（motion / condition）
+│   │       ├── part1Data.js              # 16 个视频（4 角色 × 4 版本，character / version）
+│   │       ├── constrainedSequence.js    # 随机回溯生成满足相邻约束的序列（npm test 测试）
 │   │       ├── experimentData.js         # PART1_DIMENSIONS、量表大小
-│   │       ├── monteCarloRandomization.js# Monte Carlo 随机化 + 被试间平衡
+│   │       ├── monteCarloRandomization.js# 候选序列 + 被试间平衡
 │   │       ├── saveData.js               # 提交结果到后端
 │   │       └── api.js                    # 后端地址（VITE_API_URL）
 │   ├── .env.example
@@ -40,7 +41,7 @@
 | POST | `/api/results/part1` | 保存结果，body：`{ participantInfo, ratings: [...] }` |
 | GET | `/api/health` | 健康检查 |
 
-MongoDB 集合：`part1_orders`（`videoOrder`, `createdAt`）和 `part1_results`（`participantInfo`, `ratings`, `completedAt`）。时间戳由服务端生成。`ratings` 每行包含 `order`, `motion`, `condition`, `videoId` 和四个维度（`valence`, `trustworthy`, `relationship`, `dominance`），结构与上一轮 Firestore 数据一致。非法请求返回 400。
+MongoDB 集合：`part1_orders`（`videoOrder`, `createdAt`）和 `part1_results`（`participantInfo`, `videoOrder`, `ratings`, `completedAt`）。`completedAt` 由服务端生成。`participantInfo` 包含 `participantCode`, `age`, `gender`, `consent`（必须为 true）, `consentTimestamp`（ISO 字符串），不收集姓名。`videoOrder` 是该被试实际看到的视频 ID 顺序。`ratings` 每行包含 `trialIndex`（从 1 开始）, `videoId`（如 `1_emi`）, `character`, `version` 和四个维度（`valence`, `trustworthy`, `relationship`, `dominance`）。非法请求返回 400。
 
 ## 环境变量
 

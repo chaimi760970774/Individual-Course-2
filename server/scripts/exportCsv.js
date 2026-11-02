@@ -32,16 +32,18 @@ try {
     const info = doc.participantInfo ?? {};
     for (const r of doc.ratings ?? []) {
       rows.push({
-        participantId: info.participantId,
+        participantCode: info.participantCode,
         age: info.age,
         gender: info.gender,
+        consent: info.consent,
+        consentTimestamp: info.consentTimestamp,
         completedAt: doc.completedAt,
         ...r,
       });
     }
   }
 
-  const fixed = ['participantId', 'age', 'gender', 'completedAt', 'order', 'videoId', 'motion', 'condition'];
+  const fixed = ['participantCode', 'age', 'gender', 'consent', 'consentTimestamp', 'completedAt', 'trialIndex', 'videoId', 'character', 'version'];
   const extra = [...new Set(rows.flatMap(Object.keys))].filter(k => !fixed.includes(k));
   const columns = [...fixed, ...extra];
 

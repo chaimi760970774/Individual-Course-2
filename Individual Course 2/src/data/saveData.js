@@ -3,10 +3,10 @@ import { API_URL } from "./api.js";
 // 每个视频一行
 function buildPart1Rows(videoOrder, ratings, dimensions) {
   return videoOrder.map((v, idx) => ({
-    order: idx + 1,
-    motion: v.motion,
-    condition: v.condition,
+    trialIndex: idx + 1,
     videoId: v.id,
+    character: v.character,
+    version: v.version,
     ...Object.fromEntries(dimensions.map(d => [d.key, ratings[v.id]?.[d.key] ?? null])),
   }));
 }
@@ -18,7 +18,7 @@ export async function savePart1Results(participantInfo, videoOrder, ratings, dim
   const res = await fetch(`${API_URL}/api/results/part1`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ participantInfo, ratings: rows }),
+    body: JSON.stringify({ participantInfo, videoOrder: videoOrder.map(v => v.id), ratings: rows }),
   });
   if (!res.ok) throw new Error(`Saving Part1 results failed: ${res.status}`);
 }

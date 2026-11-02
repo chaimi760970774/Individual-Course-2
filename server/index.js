@@ -40,7 +40,7 @@ const isVideoId = v =>
 const isRating = v => v === null || (Number.isInteger(v) && v >= 1 && v <= 7);
 const isFieldName = k => /^[A-Za-z][A-Za-z0-9_]{0,49}$/.test(k);
 
-const ROW_FIELDS = ['order', 'motion', 'condition', 'videoId'];
+const ROW_FIELDS = ['trialIndex', 'videoId', 'character', 'version'];
 
 function validateVideoOrder(videoOrder) {
   if (!Array.isArray(videoOrder) || videoOrder.length === 0 || videoOrder.length > 100)
@@ -52,20 +52,23 @@ function validateVideoOrder(videoOrder) {
 
 function validateParticipantInfo(info) {
   if (!isPlainObject(info)) return 'participantInfo must be an object';
-  if (!isShortString(info.participantId) || info.participantId.trim() === '')
-    return 'participantInfo.participantId is required';
+  if (!isShortString(info.participantCode) || info.participantCode.trim() === '')
+    return 'participantInfo.participantCode is required';
   if (!(isShortString(info.age, 10) || Number.isFinite(info.age)))
     return 'participantInfo.age is invalid';
   if (!isShortString(info.gender, 50)) return 'participantInfo.gender is invalid';
+  if (info.consent !== true) return 'participantInfo.consent must be true';
+  if (!isShortString(info.consentTimestamp, 40) || Number.isNaN(Date.parse(info.consentTimestamp)))
+    return 'participantInfo.consentTimestamp must be an ISO date string';
   return null;
 }
 
 function validateRatingRow(row) {
   if (!isPlainObject(row)) return 'each rating must be an object';
-  if (!Number.isInteger(row.order) || row.order < 1) return 'rating.order is invalid';
+  if (!Number.isInteger(row.trialIndex) || row.trialIndex < 1) return 'rating.trialIndex is invalid';
   if (!isVideoId(row.videoId)) return 'rating.videoId is invalid';
-  if (!isShortString(row.motion, 50) || !isShortString(row.condition, 50))
-    return 'rating.motion and rating.condition must be strings';
+  if (!isShortString(row.character, 50) || row.character === '') return 'rating.character is invalid';
+  if (!Number.isInteger(row.version) || row.version < 1) return 'rating.version is invalid';
   for (const [key, value] of Object.entries(row)) {
     if (ROW_FIELDS.includes(key)) continue;
     if (!isFieldName(key)) return `rating field "${key}" is not allowed`;
@@ -94,12 +97,15 @@ app.post('/api/orders/part1', async (req, res) => {
   res.status(201).json({ id: result.insertedId });
 });
 
-// save Part1 results (same shape as the previous Firestore documents)
+// save Part1 results
 app.post('/api/results/part1', async (req, res) => {
-  const { participantInfo, ratings } = req.body ?? {};
+  const { participantInfo, videoOrder, ratings } = req.body ?? {};
 
   const infoError = validateParticipantInfo(participantInfo);
   if (infoError) return res.status(400).json({ error: infoError });
+
+  const orderError = validateVideoOrder(videoOrder);
+  if (orderError) return res.status(400).json({ error: orderError });
 
   if (!Array.isArray(ratings) || ratings.length === 0 || ratings.length > 100)
     return res.status(400).json({ error: 'ratings must be a non-empty array' });
@@ -110,10 +116,13 @@ app.post('/api/results/part1', async (req, res) => {
 
   const result = await part1Results().insertOne({
     participantInfo: {
-      participantId: participantInfo.participantId,
+      participantCode: participantInfo.participantCode.trim(),
       age: participantInfo.age,
       gender: participantInfo.gender,
+      consent: participantInfo.consent,
+      consentTimestamp: participantInfo.consentTimestamp,
     },
+    videoOrder,
     ratings,
     completedAt: new Date(),
   });

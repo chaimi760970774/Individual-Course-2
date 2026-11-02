@@ -14,20 +14,20 @@ export function DemographicsView({ form, errors, isComplete, onChange, onSubmit 
         </div>
 
         <div className="demo__form">
-          {/* Participant ID / Name */}
+          {/* Participant code */}
           <div className="demo__field">
             <label className="demo__label">
-              Participant Name / ID <span className="demo__required">*</span>
+              Participant code <span className="demo__required">*</span>
             </label>
             <input
-              className={`demo__input ${errors.participantId ? "demo__input--error" : ""}`}
+              className={`demo__input ${errors.participantCode ? "demo__input--error" : ""}`}
               type="text"
-              placeholder="Enter your name or participant ID"
-              value={form.participantId}
-              onChange={e => onChange("participantId", e.target.value)}
+              placeholder="Enter the participant code given to you by the experimenter"
+              value={form.participantCode}
+              onChange={e => onChange("participantCode", e.target.value)}
             />
-            {errors.participantId && (
-              <span className="demo__error">{errors.participantId}</span>
+            {errors.participantCode && (
+              <span className="demo__error">{errors.participantCode}</span>
             )}
           </div>
 

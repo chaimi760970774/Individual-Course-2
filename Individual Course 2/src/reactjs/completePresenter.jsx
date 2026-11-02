@@ -14,6 +14,7 @@ function Complete() {
     localStorage.removeItem("part1_ratings");
     localStorage.removeItem("part1_phase");
     localStorage.removeItem("participantInfo");
+    localStorage.removeItem("consent");
   }, []);
 
   return (

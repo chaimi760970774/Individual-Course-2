@@ -1,27 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DemographicsView } from "/src/views/demographicsView.jsx";
-import { API_URL } from "/src/data/api.js";
 
 function Demographics() {
   const navigate = useNavigate();
 
-  // 后台唤醒 Render 上休眠的后端，不等待结果
-  useEffect(() => {
-    fetch(`${API_URL}/api/health`).catch(err => {
-      console.warn("Backend wake-up request failed:", err);
-    });
-  }, []);
-
   const [form, setForm] = useState({
-    participantId: "",
+    participantCode: "",
     age: "",
     gender: "",
   });
   const [errors, setErrors] = useState({});
 
   const isComplete =
-    form.participantId.trim() !== "" &&
+    form.participantCode.trim() !== "" &&
     form.age !== "" &&
     form.gender !== "";
 
@@ -31,8 +23,9 @@ function Demographics() {
   }
 
   function handlerSubmitACB() {
+    const participantCode = form.participantCode.trim();
     const newErrors = {};
-    if (!form.participantId.trim()) newErrors.participantId = "Please enter your name or ID";
+    if (!participantCode) newErrors.participantCode = "Please enter your participant code";
     if (!form.age) newErrors.age = "Please enter your age";
     if (!form.gender) newErrors.gender = "Please select your gender";
 
@@ -40,11 +33,12 @@ function Demographics() {
       setErrors(newErrors);
       return;
     }
+    // 清掉上一次的进度，但保留本次的知情同意
+    const consent = JSON.parse(localStorage.getItem("consent"));
     localStorage.clear();
-    localStorage.setItem("participantInfo", JSON.stringify(form));
+    localStorage.setItem("consent", JSON.stringify(consent));
+    localStorage.setItem("participantInfo", JSON.stringify({ ...form, participantCode, ...consent }));
     navigate("/part1");
-
-    
   }
 
   return (
