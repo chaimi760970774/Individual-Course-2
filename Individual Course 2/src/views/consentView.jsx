@@ -12,6 +12,9 @@ export function ConsentView({ agreed, onToggle, onContinue }) {
           <p>
             The purpose of this pre-study is to investigate how people perceive the behaviours and movements of virtual characters in different social interactions.
           </p>
+          <p>
+            The research principal for this project is KTH Royal Institute of Technology. The research has been approved by the Swedish Ethical Review Authority. The reference number is 2026-02972-01.
+          </p>
 
           <h2>What Will You Do?</h2>
           <p>
@@ -34,7 +37,10 @@ export function ConsentView({ agreed, onToggle, onContinue }) {
 
           <h2>Data Collection and Privacy</h2>
           <p>
-            Your questionnaire responses will be collected and used for research purposes to analyse participants' perceptions of virtual characters. Your questionnaire responses and collected data will be handled in such a way that unauthorised persons cannot access them.
+            Your questionnaire responses will be collected and used for research purposes to analyse participants' perceptions of virtual characters.
+          </p>
+          <p>
+            Your questionnaire responses and collected data will be handled in such a way that unauthorised persons cannot access them.
           </p>
           <p>
             All research data will be stored in coded form. The code key will be stored securely and separately from the research data, and only the responsible researcher will have access to the code key.
@@ -44,6 +50,36 @@ export function ConsentView({ agreed, onToggle, onContinue }) {
           </p>
           <p>
             Your data will be retained for up to ten years following completion of the study.
+          </p>
+
+          <h2>GDPR and Data Protection</h2>
+          <p>
+            The processing of your data is governed by the General Data Protection Regulation (GDPR).
+          </p>
+          <p>
+            Personal data are processed for scientific research purposes and for the performance of research carried out in the public interest. The legal basis for processing is that it is necessary for the performance of a task carried out in the public interest (Article 6(1)(e) GDPR).
+          </p>
+          <p>
+            The controller responsible for your personal data is KTH Royal Institute of Technology.
+          </p>
+          <p>
+            Under the GDPR, you have the right to obtain information, free of charge, about the personal data processed within the project and, where necessary, to have inaccuracies corrected.
+          </p>
+          <p>
+            You may also request the erasure of your personal data or restriction of processing. However, these rights may be limited where the data are necessary for the research, as permitted by applicable law.
+          </p>
+          <p>
+            If you have questions about your personal data, please contact the responsible researcher, Robin Palmberg (<a href="mailto:robinpa@kth.se">robinpa@kth.se</a>).
+          </p>
+          <p>
+            The KTH Data Protection Officer can be contacted at <a href="mailto:dataskyddsombud@kth.se">dataskyddsombud@kth.se</a>.
+          </p>
+          <p>
+            If you are dissatisfied with the way your personal data are processed, you have the right to submit a complaint to the Swedish Authority for Privacy Protection.
+          </p>
+          <p>
+            For more information, please refer to the official EU GDPR regulation:{" "}
+            <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng" target="_blank" rel="noopener noreferrer">https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng</a>
           </p>
 
           <h2>Possible Risks</h2>
@@ -74,7 +110,7 @@ export function ConsentView({ agreed, onToggle, onContinue }) {
             checked={agreed}
             onChange={e => onToggle(e.target.checked)}
           />
-          <span>I agree to participate in this pre-study.</span>
+          <span>I confirm that I have read and understood the participant information and voluntarily agree to participate in this pre-study.</span>
         </label>
 
         <button
